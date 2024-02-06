@@ -24,8 +24,10 @@ pipeline {
                 '''
                 echo 'ST26719053N: TEST server is backup and updated'
             }
+        }
         stage('ST36719053N') {
             steps {
+                sh '''#!/bin/bash
                 curl -ls http://TESTsvr6719053N.localdomain|head -n 1 > /tmp/TEST-result-file
                 echo 'ST36719053N: Test result for TEST server is generated: TEST-resultfile '
             }
@@ -43,13 +45,11 @@ pipeline {
                 script {
                     if (params.ACTION == 'Proceed Production') {
                         echo 'ST56719053N: Proceed to Production Phase'
-
                         locate_script = '/tmp/clone/POC_REPO/6719053N_script'
                         bolt script run $locate_script -t $targets -u clientadm -p user1234 --no-host-key-check --run-as root
                     }
                     if (params.ACTION == 'RollBack Test') {
                         echo 'ST56719053N: Rollback Test Server'
-
                         sh 'docker stop test_container || true'
                         sh 'docker rm test_container || true'
                         sh 'docker run --name test_container -d BKUP-TEST-image'
