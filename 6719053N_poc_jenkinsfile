@@ -52,6 +52,7 @@ pipeline {
                     }
                     if (params.ACTION == 'RollBack Test') {
                         echo 'ST56719053N: Rollback Test Server'
+                        sh '''#!/bin/bash
                         docker stop TESTsvr6719053N
                         docker rm TESTsvr6719053N
                         docker run -d --network customernetwork --privileged -h TESTsvr6719053N --add-host=sddo-vm.localdomain:172.20.113.92 --ip=192.168.20.200 BKUP-TEST-image /sbin/ini
