@@ -30,6 +30,7 @@ pipeline {
                 sh '''#!/bin/bash
                 curl -ls http://TESTsvr6719053N.localdomain|head -n 1 > /tmp/TEST-result-file
                 echo 'ST36719053N: Test result for TEST server is generated: TEST-resultfile '
+                '''
             }
         }
         stage('ST46719053N') {
