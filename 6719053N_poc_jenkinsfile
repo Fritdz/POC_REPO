@@ -26,21 +26,25 @@ pipeline {
         }
         stage('ST56719053N') {
             steps {
-                if (params.ACTION == 'Proceed Production') {
-                    echo 'ST56719053N: Proceed to Production Phase'
-                }
-                if (params.ACTION == 'RollBack Test') {
-                    echo 'ST56719053N: Rollback Test Server'
+                script {
+                    if (params.ACTION == 'Proceed Production') {
+                        echo 'ST56719053N: Proceed to Production Phase'
+                    }
+                    if (params.ACTION == 'RollBack Test') {
+                        echo 'ST56719053N: Rollback Test Server'
+                    }
                 }
             }
         }
         stage('ST66719053N') {
             steps {
-                if (params.ACTION == 'Proceed Production') {
-                    echo 'ST66719053N: Production server is updated'
-                }
-                if (params.ACTION == 'RollBack Test') {
-                    echo 'ST66719053N: TEST server is rollback'
+                script {
+                    if (params.ACTION == 'Proceed Production') {
+                        echo 'ST66719053N: Production server is updated'
+                    }
+                    if (params.ACTION == 'RollBack Test') {
+                        echo 'ST66719053N: TEST server is rollback'
+                    }
                 }
             }
         }
