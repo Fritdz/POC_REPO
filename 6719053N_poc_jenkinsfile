@@ -1,48 +1,48 @@
-pipeline{
-  agent any
-  stages{
-    stage('ST16719053N'){
-      steps{
-        echo 'ST16719053N: Environment is prepared. Start to rollout to TEST server'
-      }
-    }
-     stage('ST26719053N'){
-      steps{
-        echo 'ST26719053N: TEST server is backup and updated'
-      }
-    }
-     stage('ST36719053N'){
-      steps{
-        echo 'ST36719053N: Test result for TEST server is generated: TEST-resultfile '
-      }
-    }
-     stage('ST46719053N'){
-      steps{
-        echo "ST46719053N: TEST server's testing result has been inspected"
-        script {
-          input message: '6719053N, proceed to release the work to the next phase?', parameters: [choice(name: 'ACTION', choices: 'Proceed Production\nRollBack Test', description: 'Choose an action')]
+pipeline {
+    agent any
+    stages {
+        stage('ST16719053N') {
+            steps {
+                echo 'ST16719053N: Environment is prepared. Start to rollout to TEST server'
+            }
         }
-      }
+        stage('ST26719053N') {
+            steps {
+                echo 'ST26719053N: TEST server is backup and updated'
+            }
+        }
+        stage('ST36719053N') {
+            steps {
+                echo 'ST36719053N: Test result for TEST server is generated: TEST-resultfile '
+            }
+        }
+        stage('ST46719053N') {
+            steps {
+                echo "ST46719053N: TEST server's testing result has been inspected"
+                script {
+                    input message: '6719053N, proceed to release the work to the next phase?', parameters: [choice(name: 'ACTION', choices: 'Proceed Production\nRollBack Test', description: 'Choose an action')]
+                }
+            }
+        }
+        stage('ST56719053N') {
+            steps {
+                if (params.ACTION == 'Proceed Production') {
+                    echo 'ST56719053N: Proceed to Production Phase'
+                }
+                if (params.ACTION == 'RollBack Test') {
+                    echo 'ST56719053N: Rollback Test Server'
+                }
+            }
+        }
+        stage('ST66719053N') {
+            steps {
+                if (params.ACTION == 'Proceed Production') {
+                    echo 'ST66719053N: Production server is updated'
+                }
+                if (params.ACTION == 'RollBack Test') {
+                    echo 'ST66719053N: TEST server is rollback'
+                }
+            }
+        }
     }
-     stage('ST56719053N'){
-      steps{
-          if (params.ACTION == 'Proceed Production') {
-            echo 'ST56719053N: Proceed to Production Phase'
-          }
-          if (params.ACTION == 'RollBack Test') {
-            echo 'ST56719053N: Rollback Test Server'
-          }
-      }
-    }
-     stage('ST66719053N'){
-      steps{
-        if (params.ACTION == 'Proceed Production') {
-            echo 'ST56719053N: Production server is updated'
-          }
-          if (params.ACTION == 'RollBack Test') {
-            echo 'ST56719053N: TEST server is rollback'
-          }
-      }
-    }
-  }
 }
