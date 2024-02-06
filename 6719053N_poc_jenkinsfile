@@ -18,7 +18,7 @@ pipeline {
                 git clone https://github.com/Fritdz/POC_REPO
                 docker build -t BKUP-TEST-image /tmp/clone/POC_REPO
                 docker run --name test_container -d BKUP-TEST-image
-                targets=puppetclient
+                targets=TESTsvr6719053N
                 locate_script='/tmp/clone/POC_REPO/6719053N_script'
                 bolt script run $locate_script -t $targets -u clientadm -p user1234 --no-host-key-check --run-as root
                 '''
@@ -46,8 +46,11 @@ pipeline {
                 script {
                     if (params.ACTION == 'Proceed Production') {
                         echo 'ST56719053N: Proceed to Production Phase'
-                        locate_script = '/tmp/clone/POC_REPO/6719053N_script'
+                        sh '''#!/bin/bash
+                        targets=PRODsvr6719053N
+                        locate_script='/tmp/clone/POC_REPO/6719053N_script'
                         bolt script run $locate_script -t $targets -u clientadm -p user1234 --no-host-key-check --run-as root
+                        '''
                     }
                     if (params.ACTION == 'RollBack Test') {
                         echo 'ST56719053N: Rollback Test Server'
