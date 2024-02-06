@@ -11,13 +11,13 @@ pipeline {
                 sh '''#!/bin/bash
                 docker stop test_container || true
                 docker rm test_container || true
-                docker rmi BKUP-TEST-image || true
+                docker rmi bkup-test-image || true
                 puppet resource file /tmp/clone ensure=absent force=true
                 puppet resource file /tmp/clone ensure=directory
                 cd /tmp/clone
                 git clone https://github.com/Fritdz/POC_REPO
-                docker build -t BKUP-TEST-image /tmp/clone/POC_REPO
-                docker run --name test_container -d BKUP-TEST-image
+                docker build -t bkup-test-image /tmp/clone/POC_REPO
+                docker run --name test_container -d bkup-test-image
                 targets=TESTsvr6719053N
                 locate_script='/tmp/clone/POC_REPO/6719053N_script'
                 bolt script run $locate_script -t $targets -u clientadm -p user1234 --no-host-key-check --run-as root
@@ -28,7 +28,7 @@ pipeline {
         stage('ST36719053N') {
             steps {
                 sh '''#!/bin/bash
-                curl -ls http://TESTsvr6719053N.localdomain|head -n 1 > /tmp/TEST-result-file
+                curl -ls http://TESTsvr6719053N.localdomain | head -n 1 > /tmp/TEST-result-file
                 echo 'ST36719053N: Test result for TEST server is generated: TEST-resultfile '
                 '''
             }
@@ -56,7 +56,7 @@ pipeline {
                         echo 'ST56719053N: Rollback Test Server'
                         sh 'docker stop test_container || true'
                         sh 'docker rm test_container || true'
-                        sh 'docker run --name test_container -d BKUP-TEST-image'
+                        sh 'docker run --name test_container -d bkup-test-image'
                     }
                 }
             }
