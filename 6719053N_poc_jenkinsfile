@@ -9,6 +9,7 @@ pipeline {
         stage('ST26719053N') {
             steps {
                 sh '''#!/bin/bash
+                mkdir -p /tmp/6719053N/work
                 puppet resource file /tmp/6719053N/work  ensure=absent force=true
                 puppet resource file /tmp/6719053N/work ensure=directory
                 docker commit TESTsvr6719053N BKUP-TEST-image
