@@ -9,13 +9,13 @@ pipeline {
         stage('ST26719053N') {
             steps {
                 sh '''#!/bin/bash
-                puppet resource file /tmp/clone ensure=absent force=true
-                puppet resource file /tmp/clone ensure=directory
+                puppet resource file /tmp/6719053N/work  ensure=absent force=true
+                puppet resource file /tmp/6719053N/work ensure=directory
                 docker commit TESTsvr6719053N BKUP-TEST-image
-                cd /tmp/clone
+                cd /tmp/6719053N/work
                 git clone https://github.com/Fritdz/POC_REPO
                 targets=TESTsvr6719053N
-                locate_script='/tmp/clone/POC_REPO/6719053N_script'
+                locate_script='/tmp/6719053N/work/POC_REPO/6719053N_script'
                 bolt script run $locate_script -t $targets -u clientadm -p user1234 --no-host-key-check --run-as root
                 '''
                 echo 'ST26719053N: TEST server is backup and updated'
@@ -43,10 +43,10 @@ pipeline {
                     if (params.ACTION == 'Proceed Production') {
                         echo 'ST56719053N: Proceed to Production Phase'
                         sh '''#!/bin/bash
-                        cd /tmp/clone
+                        cd /tmp/6719053N/work
                         git clone https://github.com/Fritdz/POC_REPO
                         targets=PRODsvr6719053N
-                        locate_script='/tmp/clone/POC_REPO/6719053N_script'
+                        locate_script='/tmp/6719053N/work/POC_REPO/6719053N_script'
                         bolt script run $locate_script -t $targets -u clientadm -p user1234 --no-host-key-check --run-as root
                         '''
                     }
